@@ -13,12 +13,21 @@ cpr_md5sum <- function(files) {
 ##' files to know if their contents have changed.
 ##'
 ##' By default, to compare the content of the files, the following arguments are
-##' passed to `fs::dir_ls`: `recurse = TRUE` and `type = "file"`.
+##' passed to `fs::dir_ls`:
+##' - `recurse = TRUE`
+##' - `type = "file"`.
+##'
+##' Files that are only found in one folder will have `NA` in the `identical`
+##' column.
+##'
 ##' @title Compare the files in two folders
 ##' @param path_1 path of the first folder to compare
 ##' @param path_2 path of the second folder to compare
 ##' @param ... additional arguments to be passed to `fs::dir_ls` (see details)
-##' @return a tibble
+##' @return a tibble with 4 columns:
+##'   - the names of the files that are found in both folders
+##'   - their respective MD5 hashes
+##'   - whether the hashes (and therefore the files) are identical
 ##' @export
 ##' @importFrom fs path_tidy path_common
 ##' @importFrom tidyr pivot_wider

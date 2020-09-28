@@ -1,0 +1,83 @@
+---
+output: github_document
+---
+
+<!-- README.md is generated from README.Rmd. Please edit that file -->
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.path = "man/figures/README-",
+  out.width = "100%"
+)
+```
+
+# fiderent
+
+<!-- badges: start -->
+[![R build status](https://github.com/fmichonneau/fiderent/workflows/R-CMD-check/badge.svg)](https://github.com/fmichonneau/fiderent/actions)
+[![CRAN status](https://www.r-pkg.org/badges/version/fiderent)](https://CRAN.R-project.org/package=fiderent)
+<!-- badges: end -->
+
+fiderent allows you to compare whether files with the same file names in two different folders are actually identical. Determining whether two files are identical is sometimes done based on their timestamps or their sizes. There are many situations where these methods is not suitable. A more robust method is to compare their [md5sum hashes](https://en.wikipedia.org/wiki/Md5sum).
+
+I created this package to identify the files that were changed subsequent Jekyll
+builds. Once this list of file was identified, I could then invalidate them in
+their CloudFront distribution. I created a [GitHub
+Action](https://github.com/fmichonneau/ga-compare-folders) that relies on this
+package.
+
+## Installation
+
+You can install the development version from [GitHub](https://github.com/) with:
+
+``` r
+# install.packages("devtools")
+devtools::install_github("fmichonneau/fiderent")
+```
+
+
+## Example
+
+To demonstrate the use of the package, let's compare the files that have changed between the versions 0.8.0 and 0.8.0.1 of the `dplyr` package.
+
+```{r example}
+## download the two dplyr archives
+download.file(
+  "https://cran.r-project.org/src/contrib/Archive/dplyr/dplyr_0.8.0.tar.gz",
+  "dplyr_0.8.0.tar.gz"
+)
+download.file(
+  "https://cran.r-project.org/src/contrib/Archive/dplyr/dplyr_0.8.0.1.tar.gz",
+  "dplyr_0.8.0.1.tar.gz"
+)
+
+## extract them in two different folders
+untar("dplyr_0.8.0.tar.gz",  exdir = "dplyr_0.8.0")
+untar("dplyr_0.8.0.1.tar.gz",  exdir = "dplyr_0.8.0.1")
+
+## load the fiderent package
+library(fiderent)
+
+## get the full comparison between the two folders
+compare_folders("dplyr_0.8.0", "dplyr_0.8.0.1")
+
+## extract just the names of the files that have changed
+library(dplyr)
+compare_folders("dplyr_0.8.0", "dplyr_0.8.0.1") %>%
+  filter(!identical) %>%
+  pull(files)
+```
+
+
+```{r, echo=FALSE, include=FALSE}
+file.remove("dplyr_0.8.0.tar.gz")
+file.remove("dplyr_0.8.0.1.tar.gz")
+unlink("dplyr_0.8.0", recursive = TRUE, force = TRUE)
+unlink("dplyr_0.8.0.1", recursive = TRUE, force = TRUE)
+```
+
+## Code of Conduct
+  
+Please note that the fiderent project is released with a [Contributor Code of Conduct](https://contributor-covenant.org/version/2/0/CODE_OF_CONDUCT.html). By contributing to this project, you agree to abide by its terms.
