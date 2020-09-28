@@ -1,4 +1,4 @@
 library(testthat)
-library(comparer)
+library(fiderent)
 
-test_check("comparer")
+test_check("fiderent")
