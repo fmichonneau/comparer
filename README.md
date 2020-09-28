@@ -85,6 +85,10 @@ compare_folders("dplyr_0.8.0", "dplyr_0.8.0.1") %>%
 #> /inst/include/dplyr/hybrid/vector_result/ntile.h
 ```
 
+## Etymology
+
+Try to say “different folders” ten times very fast.
+
 ## Code of Conduct
 
 Please note that the fiderent project is released with a [Contributor

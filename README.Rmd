@@ -78,6 +78,10 @@ unlink("dplyr_0.8.0", recursive = TRUE, force = TRUE)
 unlink("dplyr_0.8.0.1", recursive = TRUE, force = TRUE)
 ```
 
+## Etymology
+
+Try to say "different folders" ten times very fast.
+
 ## Code of Conduct
   
 Please note that the fiderent project is released with a [Contributor Code of Conduct](https://contributor-covenant.org/version/2/0/CODE_OF_CONDUCT.html). By contributing to this project, you agree to abide by its terms.
