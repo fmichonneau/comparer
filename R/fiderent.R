@@ -35,7 +35,7 @@ compare_folders <- function(path_1, path_2, ...) {
     ...
   )
 
-  purrr::map_df(
+  res <- purrr::map_df(
     cnt,
     function(x) {
       tibble::tibble(
@@ -48,9 +48,12 @@ compare_folders <- function(path_1, path_2, ...) {
     tidyr::pivot_wider(
       names_from = .data$path,
       values_from = .data$md5
-    ) %>%
+    )
+
+
+  res %>%
     dplyr::mutate(
-      identical = .data[[path_1]] == .data[[path_2]]
+      identical = .data[[names(.)[2]]] == .data[[names(res)[3]]]
     )
 
 }
